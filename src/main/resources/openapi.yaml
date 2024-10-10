@@ -1,0 +1,242 @@
+openapi: 3.0.3
+info:
+  title: Microservicio de Transacciones Bancarias
+  description: API para la gestión de transacciones bancarias en el banco XYZ.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8083/
+paths:
+  /transacciones/deposito:
+    post:
+      summary: Registrar un depósito
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransaccionDepositoRequest'
+      responses:
+        '201':
+          description: Depósito registrado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaccionDepositoResponse'
+        '400':
+          description: Error en la operación
+
+  /transacciones/retiro:
+    post:
+      summary: Registrar un retiro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransaccionRetiroRequest'
+      responses:
+        '201':
+          description: Retiro registrado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaccionRetiroResponse'
+        '400':
+          description: Error en la operación
+
+  /transacciones/transferencia:
+    post:
+      summary: Registrar una transferencia
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransaccionTransferenciaRequest'
+      responses:
+        '201':
+          description: Transferencia registrada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaccionTransferenciaResponse'
+        '400':
+          description: Error en la operación (por ejemplo, cuenta de destino no válida o saldo insuficiente)
+
+  /transacciones/historial:
+    get:
+      summary: Consultar historial de transacciones
+      responses:
+        '200':
+          description: Lista de transacciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransaccionHistorialResponse'
+        '404':
+          description: Historial no encontrado para la cuenta indicada
+
+components:
+  schemas:
+    TransaccionDepositoRequest:
+      type: object
+      properties:
+        cuentaId:
+          type: integer
+          format: int64
+        monto:
+          type: number
+          format: double
+        fecha:
+          type: string
+          format: date
+      required:
+        - cuentaId
+        - monto
+        - fecha
+
+    TransaccionRetiroRequest:
+      type: object
+      properties:
+        cuentaId:
+          type: integer
+          format: int64
+        monto:
+          type: number
+          format: double
+        fecha:
+          type: string
+          format: date
+      required:
+        - cuentaId
+        - monto
+        - fecha
+
+    TransaccionTransferenciaRequest:
+      type: object
+      properties:
+        cuentaOrigenId:
+          type: integer
+          format: int64
+        cuentaDestinoId:
+          type: integer
+          format: int64
+        monto:
+          type: number
+          format: double
+        fecha:
+          type: string
+          format: date
+      required:
+        - cuentaOrigenId
+        - cuentaDestinoId
+        - monto
+        - fecha
+    TransaccionDepositoResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: identicador de transaccion
+        cuentaId:
+          type: integer
+          format: int64
+        monto:
+          type: number
+          format: double
+        fecha:
+          type: string
+          format: date
+        tipo:
+          type: string
+          description: Tipo de transacción (DEPOSITO, RETIRO, TRANSFERENCIA)
+      required:
+        - id
+        - cuentaId
+        - monto
+        - fecha
+        - tipo
+
+    TransaccionRetiroResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: identicador de transaccion
+        cuentaId:
+          type: integer
+          format: int64
+        monto:
+          type: number
+          format: double
+        fecha:
+          type: string
+          format: date
+        tipo:
+          type: string
+          description: Tipo de transacción (DEPOSITO, RETIRO, TRANSFERENCIA)
+      required:
+        - id
+        - cuentaId
+        - monto
+        - fecha
+        - tipo
+
+    TransaccionTransferenciaResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: identicador de transaccion
+        cuentaOrigenId:
+          type: integer
+          format: int64
+        cuentaDestinoId:
+          type: integer
+          format: int64
+        monto:
+          type: number
+          format: double
+        fecha:
+          type: string
+          format: date
+        tipo:
+          type: string
+          description: Tipo de transacción (DEPOSITO, RETIRO, TRANSFERENCIA)
+      required:
+        - id
+        - cuentaOrigenId
+        - cuentaDestinoId
+        - monto
+        - fecha
+        - tipo
+
+    TransaccionHistorialResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: identicador de transaccion
+        tipo:
+          type: string
+          description: Tipo de transacción (DEPOSITO, RETIRO, TRANSFERENCIA)
+        cuentaOrigenId:
+          type: integer
+          format: int64
+        cuentaDestinoId:
+          type: integer
+          format: int64
+        monto:
+          type: number
+          format: double
+        fecha:
+          type: string
+          format: date
+      required:
+        - id
+        - tipo
+        - cuentaOrigenId
+        - monto
+        - fecha
