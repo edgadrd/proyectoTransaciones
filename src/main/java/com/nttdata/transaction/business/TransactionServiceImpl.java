@@ -33,7 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
                 throw new RuntimeException("La cuenta no existe");
             }
 
-            CuentaResponse cuenta2 = iFeignCuenta.depositar(cuenta.getId(), depositoRequest.getMonto());
+            iFeignCuenta.depositar(cuenta.getId(), depositoRequest.getMonto());
             Transaction deposito = Transaction.builder()
                     .tipo(String.valueOf(TipoEnum.DEPOSITO))
                     .monto(depositoRequest.getMonto())

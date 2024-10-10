@@ -1,88 +1,90 @@
-package com.nttdata.transaction;
+package com.nttdata.transaction; 
 
 import com.nttdata.transaction.business.TransactionService;
 import com.nttdata.transaction.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Collections;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.NativeWebRequest;
 import java.util.List;
+import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(TransactionDelegateImpl.class)
+@ExtendWith (MockitoExtension.class)
 public class TransactionDelegateImplTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
+    @Mock
     private TransactionService transactionService;
+
+    @InjectMocks
+    private TransactionDelegateImpl transactionDelegate;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        
     }
 
     @Test
-    public void testTransaccionesDepositoPost() throws Exception {
+    public void testGetRequest() {
+        Optional<NativeWebRequest> request = transactionDelegate.getRequest();
+        assertEquals(Optional.empty(), request);
+    }
+
+    @Test
+    public void testTransaccionesDepositoPost() {
         TransaccionDepositoRequest request = new TransaccionDepositoRequest();
         TransaccionDepositoResponse response = new TransaccionDepositoResponse();
-
         when(transactionService.realizarDeposito(request)).thenReturn(response);
 
-        mockMvc.perform(post("/transacciones/deposito")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{ /* JSON representation of TransaccionDepositoRequest */ }"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{ /* JSON representation of TransaccionDepositoResponse */ }"));
+        ResponseEntity<TransaccionDepositoResponse> result = transactionDelegate.transaccionesDepositoPost(request);
+
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(response, result.getBody());
+        verify(transactionService, times(1)).realizarDeposito(request);
     }
 
     @Test
-    public void testTransaccionesHistorialGet() throws Exception {
-        List<TransaccionHistorialResponse> response = Collections.singletonList(new TransaccionHistorialResponse());
-
+    public void testTransaccionesHistorialGet() {
+        List<TransaccionHistorialResponse> response = List.of(new TransaccionHistorialResponse());
         when(transactionService.obtenerHistorialTransacciones()).thenReturn(response);
 
-        mockMvc.perform(get("/transacciones/historial"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("[{ /* JSON representation of TransaccionHistorialResponse */ }]"));
+        ResponseEntity<List<TransaccionHistorialResponse>> result = transactionDelegate.transaccionesHistorialGet();
+
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(response, result.getBody());
+        verify(transactionService, times(1)).obtenerHistorialTransacciones();
     }
 
     @Test
-    public void testTransaccionesRetiroPost() throws Exception {
+    public void testTransaccionesRetiroPost() {
         TransaccionRetiroRequest request = new TransaccionRetiroRequest();
         TransaccionRetiroResponse response = new TransaccionRetiroResponse();
-
         when(transactionService.realizarRetiro(request)).thenReturn(response);
 
-        mockMvc.perform(post("/transacciones/retiro")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{ /* JSON representation of TransaccionRetiroRequest */ }"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{ /* JSON representation of TransaccionRetiroResponse */ }"));
+        ResponseEntity<TransaccionRetiroResponse> result = transactionDelegate.transaccionesRetiroPost(request);
+
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(response, result.getBody());
+        verify(transactionService, times(1)).realizarRetiro(request);
     }
 
     @Test
-    public void testTransaccionesTransferenciaPost() throws Exception {
+    public void testTransaccionesTransferenciaPost() {
         TransaccionTransferenciaRequest request = new TransaccionTransferenciaRequest();
         TransaccionTransferenciaResponse response = new TransaccionTransferenciaResponse();
-
         when(transactionService.realizarTransferencia(request)).thenReturn(response);
 
-        mockMvc.perform(post("/transacciones/transferencia")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{ /* JSON representation of TransaccionTransferenciaRequest */ }"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{ /* JSON representation of TransaccionTransferenciaResponse */ }"));
+        ResponseEntity<TransaccionTransferenciaResponse> result = transactionDelegate.transaccionesTransferenciaPost(request);
+
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(response, result.getBody());
+        verify(transactionService, times(1)).realizarTransferencia(request);
     }
 }

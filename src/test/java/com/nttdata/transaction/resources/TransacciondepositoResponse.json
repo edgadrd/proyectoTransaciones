@@ -1,0 +1,23 @@
+[
+    {
+        "id": "1",
+        "cuentaId": 12345,
+        "monto": 100.0,
+        "fecha": "2023-10-10",
+        "tipo": "DEPOSITO"
+    },
+    {
+        "id": "2",
+        "cuentaId": 67890,
+        "monto": 200.0,
+        "fecha": "2023-10-11",
+        "tipo": "DEPOSITO"
+    },
+    {
+        "id": "3",
+        "cuentaId": 54321,
+        "monto": 300.0,
+        "fecha": "2023-10-12",
+        "tipo": "DEPOSITO"
+    }
+]
