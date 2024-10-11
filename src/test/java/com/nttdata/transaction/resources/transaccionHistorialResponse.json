@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "tipo": "TRANSFERENCIA",
+    "cuentaOrigenId": 12345,
+    "cuentaDestinoId": 67890,
+    "monto": 100.0
+  },
+  {
+    "id": "2",
+    "tipo": "DEPOSITO",
+    "cuentaOrigenId": 54321,
+    "cuentaDestinoId": 98765,
+    "monto": 200.0
+  },
+  {
+    "id": "3",
+    "tipo": "RETIRO",
+    "cuentaOrigenId": 11223,
+    "cuentaDestinoId": 44556,
+    "monto": 300.0
+  }
+]

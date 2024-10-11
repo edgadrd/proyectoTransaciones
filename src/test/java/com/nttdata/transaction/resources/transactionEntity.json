@@ -1,26 +1,21 @@
 [
-    {
-      "id": "1",
-      "tipo": "Transferencia",
-      "monto": 1000.0,
-      "cuentaOrigenId": 123456,
-      "cuentaDestinoId": 654321,
-      "fecha": "2023-10-01"
-    },
-    {
+  {
+    "id": "1",
+    "tipo": "DEPOSITO",
+    "monto": 100.0,
+    "cuentaDestinoId": 1
+  },
+  {
       "id": "2",
-      "tipo": "Pago",
-      "monto": 500.0,
-      "cuentaOrigenId": 123456,
-      "cuentaDestinoId": 654321,
-      "fecha": "2023-10-02"
-    },
-    {
+      "tipo": "RETIRO",
+      "monto": 100.0,
+      "cuentaDestinoId": 1
+  },
+  {
       "id": "3",
-      "tipo": "Depósito",
-      "monto": 1500.0,
-      "cuentaOrigenId": 123456,
-      "cuentaDestinoId": 654321,
-      "fecha": "2023-10-03"
-    }
-  ]
+      "tipo": "TRANSFERENCIA",
+      "monto": 100.0,
+      "cuentaOrigenId": 1,
+      "cuentaDestinoId": 2
+  }
+]
